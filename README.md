@@ -1,2 +1,3 @@
-# aliyun_api
-Python API client for the Alibaba Cloud services
+# Alibaba Cloud API
+
+Python API client for the Alibaba Cloud services.
