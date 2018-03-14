@@ -37,15 +37,98 @@ __copyright__ = "Copyright (c) 2008-2018 Hive Solutions Lda."
 __license__ = "Apache License, Version 2.0"
 """ The license for the module """
 
+import hmac
+import base64
+import hashlib
+import datetime
+
 import appier
+
+from . import bucket
 
 BASE_URL = "https://oss-cn-beijing.aliyuncs.com/"
 """ The default base URL to be used when no other
 base URL value is provided to the constructor """
 
-class API(appier.API):
+class API(
+    appier.API,
+    bucket.BucketAPI
+):
 
     def __init__(self, *args, **kwargs):
         appier.API.__init__(self, *args, **kwargs)
         self.base_url = appier.conf("ALIYUN_BASE_URL", BASE_URL)
-        self.base_url = kwargs.get("base_url", BASE_URL)
+        self.access_key = appier.conf("ALIYUN_ACCESS_KEY", None)
+        self.secret = appier.conf("ALIYUN_SECRET", None)
+        self.base_url = kwargs.get("base_url", self.base_url)
+        self.access_key = kwargs.get("access_key", self.access_key)
+        self.secret = kwargs.get("secret", self.secret)
+
+    def build(
+        self,
+        method,
+        url,
+        data = None,
+        data_j = None,
+        data_m = None,
+        headers = None,
+        params = None,
+        mime = None,
+        kwargs = None
+    ):
+        sign = kwargs.pop("sign", False)
+        if sign and self.access_key and self.secret:
+            headers["Content-MD5"] = self._content_md5(data = data)
+            headers["Content-Type"] = self._content_type()
+            headers["Date"] = self._date()
+            headers["Authorization"] = self._signature(
+                method,
+                data = data,
+                headers = headers
+            )
+
+    def _content_md5(self, data = None):
+        content_md5 = hashlib.md5(data or b"").digest()
+        content_md5 = base64.b64encode(content_md5)
+        return appier.legacy.str(content_md5)
+
+    def _content_type(self, data = None):
+        return "text/plain"
+
+    def _date(self):
+        date = datetime.datetime.utcnow()
+        return date.strftime("%a, %d %b %Y %H:%M:%S GMT")
+
+    def _signature(self, method, data = None, headers = None):
+        #@todo isto pode ainda não estár set !!!
+        content_md5 = headers["Content-MD5"]
+        content_type = headers.get("Content-Type", "")
+        date = headers["Date"]
+
+        #@todo this is hardcoded for the list operation
+        canonical_headers = ""
+        canonical_resource = "/"
+
+        secret = appier.legacy.bytes(self.secret, force = True)
+        method = appier.legacy.bytes(method, force = True)
+        content_md5 = appier.legacy.bytes(content_md5, force = True)
+        content_type = appier.legacy.bytes(content_type, force = True)
+        date = appier.legacy.bytes(date, force = True)
+        canonical_headers = appier.legacy.bytes(canonical_headers, force = True)
+        canonical_resource = appier.legacy.bytes(canonical_resource, force = True)
+
+        base = "%s\n%s\n%s\n%s\n%s%s" % (
+            method,
+            content_md5,
+            content_type,
+            date,
+            canonical_headers,
+            canonical_resource
+        )
+        base = appier.legacy.bytes(base, force = True)
+
+        signature = hmac.new(secret, base, hashlib.sha1).digest()
+        signature = base64.b64encode(signature)
+        signature = appier.legacy.str(signature)
+
+        return "OSS %s:%s" % (self.access_key, signature)
