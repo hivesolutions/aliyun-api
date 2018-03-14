@@ -65,7 +65,7 @@ class API(
         self.base_url = kwargs.get("base_url", self.base_url)
         self.access_key = kwargs.get("access_key", self.access_key)
         self.secret = kwargs.get("secret", self.secret)
-        self.bucket_url = self.base_url.replace("https://", "https://%s")
+        self.bucket_url = self.base_url.replace("https://", "https://%s.")
 
     def build(
         self,

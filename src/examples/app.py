@@ -60,6 +60,18 @@ class AliyunApp(appier.WebApp):
         buckets = api.list_buckets()
         return buckets
 
+    @appier.route("/buckets/<str:bucket>/create/<str:message>", "GET")
+    def create_object(self, bucket, message):
+        name = self.field("name", "hello")
+        api = self.get_api()
+        message = appier.legacy.bytes(
+            message,
+            encoding = "utf-8",
+            force = True
+        )
+        contents = api.create_object(bucket, name, message)
+        return contents
+
     def get_api(self):
         api = base.get_api()
         return api
