@@ -41,5 +41,10 @@ class ObjectAPI(object):
 
     def create_object(self, bucket, name, data):
         url = self.bucket_url % bucket + "%s" % name
-        contents = self.put(url, data = data)
+        contents = self.put(
+            url,
+            data = data,
+            sign = True,
+            resource = "/%s/%s" % (bucket, name)
+        )
         return contents

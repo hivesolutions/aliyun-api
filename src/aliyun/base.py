@@ -80,6 +80,7 @@ class API(
         kwargs = None
     ):
         sign = kwargs.pop("sign", False)
+        resource = kwargs.pop("resource", "/")
         if sign and self.access_key and self.secret:
             headers["Content-MD5"] = self._content_md5(data = data)
             headers["Content-Type"] = self._content_type()
@@ -87,7 +88,8 @@ class API(
             headers["Authorization"] = self._signature(
                 method,
                 data = data,
-                headers = headers
+                headers = headers,
+                resource = resource
             )
 
     def _content_md5(self, data = None):
@@ -102,7 +104,7 @@ class API(
         date = datetime.datetime.utcnow()
         return date.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
-    def _signature(self, method, data = None, headers = None):
+    def _signature(self, method, data = None, headers = None, resource = None):
         #@todo isto pode ainda não estár set !!!
         content_md5 = headers["Content-MD5"]
         content_type = headers.get("Content-Type", "")
@@ -110,7 +112,7 @@ class API(
 
         #@todo this is hardcoded for the list operation
         canonical_headers = ""
-        canonical_resource = "/"
+        canonical_resource = resource or "/"
 
         secret = appier.legacy.bytes(self.secret, force = True)
         method = appier.legacy.bytes(method, force = True)
@@ -129,6 +131,8 @@ class API(
             canonical_resource
         )
         base = appier.legacy.bytes(base, force = True)
+        
+        print(repr(base))
 
         signature = hmac.new(secret, base, hashlib.sha1).digest()
         signature = base64.b64encode(signature)

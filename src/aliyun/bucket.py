@@ -48,11 +48,11 @@ class BucketAPI(object):
         url = self.base_url
         contents = self.get(
             url,
-            sign = True,
             params = {
                 "prefix": prefix,
                 "marker": marker,
                 "max-keys": max_keys
-            }
+            },
+            sign = True
         )
         return contents
