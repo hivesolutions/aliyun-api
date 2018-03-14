@@ -131,8 +131,6 @@ class API(
             canonical_resource
         )
         base = appier.legacy.bytes(base, force = True)
-        
-        print(repr(base))
 
         signature = hmac.new(secret, base, hashlib.sha1).digest()
         signature = base64.b64encode(signature)
