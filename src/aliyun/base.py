@@ -105,12 +105,10 @@ class API(
         return date.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
     def _signature(self, method, data = None, headers = None, resource = None):
-        #@todo isto pode ainda não estár set !!!
         content_md5 = headers["Content-MD5"]
         content_type = headers.get("Content-Type", "")
         date = headers["Date"]
 
-        #@todo this is hardcoded for the list operation
         canonical_headers = ""
         canonical_resource = resource or "/"
 
