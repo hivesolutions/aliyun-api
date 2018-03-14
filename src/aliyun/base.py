@@ -45,6 +45,7 @@ import datetime
 import appier
 
 from . import bucket
+from . import object
 
 BASE_URL = "https://oss-cn-beijing.aliyuncs.com/"
 """ The default base URL to be used when no other
@@ -52,7 +53,8 @@ base URL value is provided to the constructor """
 
 class API(
     appier.API,
-    bucket.BucketAPI
+    bucket.BucketAPI,
+    object.ObjectAPI
 ):
 
     def __init__(self, *args, **kwargs):
@@ -63,6 +65,7 @@ class API(
         self.base_url = kwargs.get("base_url", self.base_url)
         self.access_key = kwargs.get("access_key", self.access_key)
         self.secret = kwargs.get("secret", self.secret)
+        self.bucket_url = self.base_url.replace("https://", "https://%s")
 
     def build(
         self,

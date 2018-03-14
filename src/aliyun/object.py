@@ -19,6 +19,9 @@
 # You should have received a copy of the Apache License along with
 # Hive Alibaba Cloud API. If not, see <http://www.apache.org/licenses/>.
 
+__author__ = "João Magalhães <joamag@hive.pt>"
+""" The author(s) of the module """
+
 __version__ = "1.0.0"
 """ The version of the module """
 
@@ -34,10 +37,9 @@ __copyright__ = "Copyright (c) 2008-2018 Hive Solutions Lda."
 __license__ = "Apache License, Version 2.0"
 """ The license for the module """
 
-from . import base
-from . import bucket
-from . import object
+class ObjectAPI(object):
 
-from .base import BASE_URL, API
-from .bucket import BucketAPI
-from .object import ObjectAPI
+    def create_object(self, bucket, name, data):
+        url = self.bucket_url % bucket + "%s" % name
+        contents = self.put(url, data = data)
+        return contents
