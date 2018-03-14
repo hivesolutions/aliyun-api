@@ -48,3 +48,6 @@ class ObjectAPI(object):
             resource = "/%s/%s" % (bucket, name)
         )
         return contents
+
+    def build_url_object(self, bucket, name):
+        return self.bucket_url % bucket + "%s" % name
