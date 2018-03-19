@@ -113,12 +113,6 @@ class API(
         canonical_resource = resource or "/"
 
         secret = appier.legacy.bytes(self.secret, force = True)
-        method = appier.legacy.bytes(method, force = True)
-        content_md5 = appier.legacy.bytes(content_md5, force = True)
-        content_type = appier.legacy.bytes(content_type, force = True)
-        date = appier.legacy.bytes(date, force = True)
-        canonical_headers = appier.legacy.bytes(canonical_headers, force = True)
-        canonical_resource = appier.legacy.bytes(canonical_resource, force = True)
 
         base = "%s\n%s\n%s\n%s\n%s%s" % (
             method,
