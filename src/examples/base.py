@@ -43,7 +43,7 @@ import aliyun
 
 def get_api():
     return aliyun.API(
-        base_url = appier.conf("ALIYUN_BASE_URL"),
+        base_url = appier.conf("ALIYUN_BASE_URL", aliyun.BASE_URL),
         access_key = appier.conf("ALIYUN_ACCESS_KEY"),
         secret = appier.conf("ALIYUN_SECRET")
     )
