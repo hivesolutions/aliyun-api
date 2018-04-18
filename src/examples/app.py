@@ -79,7 +79,7 @@ class AliyunApp(appier.WebApp):
         api = self.get_api()
         path = self.field("path", mandatory = True)
         name = self.field("name", None)
-        name = name or "/" + os.path.basename(path)
+        name = name or os.path.basename(path)
         contents = api.create_file_object(bucket, name, path)
         return contents
 
