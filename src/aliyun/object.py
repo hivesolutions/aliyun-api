@@ -37,17 +37,28 @@ __copyright__ = "Copyright (c) 2008-2018 Hive Solutions Lda."
 __license__ = "Apache License, Version 2.0"
 """ The license for the module """
 
+import appier
+
 class ObjectAPI(object):
 
-    def create_object(self, bucket, name, data):
+    def create_object(self, bucket, name, data, md5 = None):
         url = self.bucket_url % bucket + "%s" % name
         contents = self.put(
             url,
             data = data,
             sign = True,
-            resource = "/%s/%s" % (bucket, name)
+            resource = "/%s/%s" % (bucket, name),
+            md5 = md5 or self._content_md5(data)
         )
         return contents
 
     def build_url_object(self, bucket, name):
         return self.bucket_url % bucket + "%s" % name
+
+    def create_file_object(self, bucket, name, path, md5 = None):
+        return self.create_object(
+            bucket,
+            name,
+            data = appier.file_g(path),
+            md5 = md5 or self._content_md5(appier.file_g(path))
+        )

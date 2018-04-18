@@ -81,19 +81,24 @@ class API(
     ):
         sign = kwargs.pop("sign", False)
         resource = kwargs.pop("resource", "/")
+        content_md5 = kwargs.pop("md5", None)
         if sign and self.access_key and self.secret:
-            headers["Content-MD5"] = self._content_md5(data = data)
+            headers["Content-MD5"] = content_md5 or self._content_md5(data = data)
             headers["Content-Type"] = self._content_type()
             headers["Date"] = self._date()
             headers["Authorization"] = self._signature(
                 method,
-                data = data,
                 headers = headers,
                 resource = resource
             )
 
     def _content_md5(self, data = None):
-        content_md5 = hashlib.md5(data or b"").digest()
+        data = data or b""
+        if appier.legacy.is_bytes(data): data = iter((len(data), data))
+        next(data)
+        md5 = hashlib.md5()
+        for chunk in data: md5.update(chunk)
+        content_md5 = md5.digest()
         content_md5 = base64.b64encode(content_md5)
         return appier.legacy.str(content_md5)
 
