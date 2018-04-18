@@ -41,7 +41,7 @@ import os
 
 import appier
 
-import base
+from . import base
 
 class AliyunApp(appier.WebApp):
 
