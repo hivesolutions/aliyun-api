@@ -4,9 +4,11 @@ Python API client for the Alibaba Cloud services.
 
 ## Configuration
 
-* `ALIYUN_BASE_URL` (`str`) - The base URL to be used for the API calls (defaults to `https://oss-cn-beijing.aliyuncs.com/`)
-* `ALIYUN_ACCESS_KEY` (`str`) - Secret key to be used to authenticate API request (defaults to `None`)
-* `ALIYUN_SECRET` (`str`) - String value to be kept secret and used in the request signing process as the secret key (defaults to `None`)
+| Name | Type | Description |
+| ----- | ----- | ----- |
+| **ALIYUN_BASE_URL** | `str` | The base URL to be used for the API calls (defaults to `https://oss-cn-beijing.aliyuncs.com/`). |
+| **ALIYUN_ACCESS_KEY** | `str` | Secret key to be used to authenticate API request (defaults to `None`). |
+| **ALIYUN_SECRET** | `str` | String value to be kept secret and used in the request signing process as the secret key (defaults to `None`). |
 
 ## License
 
