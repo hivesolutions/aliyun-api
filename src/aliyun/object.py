@@ -42,7 +42,7 @@ import appier
 class ObjectAPI(object):
 
     def create_object(self, bucket, name, data, md5 = None):
-        url = self.bucket_url % bucket + "%s" % name
+        url = self.bucket_url % bucket + "%s" % appier.legacy.quote(name)
         contents = self.put(
             url,
             data = data,
