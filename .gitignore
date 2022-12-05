@@ -5,4 +5,4 @@ session.shelve*
 
 /dist
 /build
-/src/aliyun-api.egg-info
+/src/aliyun_api.egg-info
