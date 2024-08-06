@@ -16,7 +16,7 @@ Alibaba Cloud API is currently licensed under the [Apache License, Version 2.0](
 
 ## Build Automation
 
-[![Build Status](https://app.travis-ci.com/hivesolutions/aliyun-api.svg?branch=master)](https://travis-ci.com/github/hivesolutions/aliyun-api)
+[![Build Status GitHub](https://github.com/hivesolutions/aliyun-api/workflows/Main%20Workflow/badge.svg)](https://github.com/hivesolutions/aliyun-api/actions)
 [![Coverage Status](https://coveralls.io/repos/hivesolutions/aliyun-api/badge.svg?branch=master)](https://coveralls.io/r/hivesolutions/aliyun-api?branch=master)
 [![PyPi Status](https://img.shields.io/pypi/v/aliyun-api.svg)](https://pypi.python.org/pypi/aliyun-api)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/)
