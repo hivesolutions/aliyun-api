@@ -28,29 +28,10 @@ __copyright__ = "Copyright (c) 2008-2024 Hive Solutions Lda."
 __license__ = "Apache License, Version 2.0"
 """ The license for the module """
 
-import appier
+import unittest
 
 
-class ObjectAPI(object):
+class BaseTest(unittest.TestCase):
 
-    def create_object(self, bucket, name, data, md5=None):
-        url = self.bucket_url % bucket + "%s" % appier.legacy.quote(name)
-        contents = self.put(
-            url,
-            data=data,
-            sign=True,
-            resource="/%s/%s" % (bucket, name),
-            md5=md5 or self._content_md5(data),
-        )
-        return contents
-
-    def build_url_object(self, bucket, name):
-        return self.bucket_url % bucket + "%s" % name
-
-    def create_file_object(self, bucket, name, path, md5=None):
-        return self.create_object(
-            bucket,
-            name,
-            data=appier.file_g(path),
-            md5=md5 or self._content_md5(appier.file_g(path)),
-        )
+    def test_basic(self):
+        self.assertEqual(1 + 1, 2)

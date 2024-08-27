@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Hive Alibaba Cloud API
-# Copyright (c) 2008-2020 Hive Solutions Lda.
+# Copyright (c) 2008-2024 Hive Solutions Lda.
 #
 # This file is part of Hive Alibaba Cloud API.
 #
@@ -22,16 +22,7 @@
 __author__ = "João Magalhães <joamag@hive.pt>"
 """ The author(s) of the module """
 
-__version__ = "1.0.0"
-""" The version of the module """
-
-__revision__ = "$LastChangedRevision$"
-""" The revision number of the module """
-
-__date__ = "$LastChangedDate$"
-""" The last change date of the module """
-
-__copyright__ = "Copyright (c) 2008-2020 Hive Solutions Lda."
+__copyright__ = "Copyright (c) 2008-2024 Hive Solutions Lda."
 """ The copyright for the module """
 
 __license__ = "Apache License, Version 2.0"
@@ -51,11 +42,8 @@ BASE_URL = "https://oss-cn-beijing.aliyuncs.com/"
 """ The default base URL to be used when no other
 base URL value is provided to the constructor """
 
-class API(
-    appier.API,
-    bucket.BucketAPI,
-    object.ObjectAPI
-):
+
+class API(appier.API, bucket.BucketAPI, object.ObjectAPI):
 
     def __init__(self, *args, **kwargs):
         appier.API.__init__(self, *args, **kwargs)
@@ -71,45 +59,45 @@ class API(
         self,
         method,
         url,
-        data = None,
-        data_j = None,
-        data_m = None,
-        headers = None,
-        params = None,
-        mime = None,
-        kwargs = None
+        data=None,
+        data_j=None,
+        data_m=None,
+        headers=None,
+        params=None,
+        mime=None,
+        kwargs=None,
     ):
         sign = kwargs.pop("sign", False)
         resource = kwargs.pop("resource", "/")
         content_md5 = kwargs.pop("md5", None)
         if sign and self.access_key and self.secret:
-            headers["Content-MD5"] = content_md5 or self._content_md5(data = data)
+            headers["Content-MD5"] = content_md5 or self._content_md5(data=data)
             headers["Content-Type"] = self._content_type()
             headers["Date"] = self._date()
             headers["Authorization"] = self._signature(
-                method,
-                headers = headers,
-                resource = resource
+                method, headers=headers, resource=resource
             )
 
-    def _content_md5(self, data = None):
+    def _content_md5(self, data=None):
         data = data or b""
-        if appier.legacy.is_bytes(data): data = iter((len(data), data))
+        if appier.legacy.is_bytes(data):
+            data = iter((len(data), data))
         next(data)
         md5 = hashlib.md5()
-        for chunk in data: md5.update(chunk)
+        for chunk in data:
+            md5.update(chunk)
         content_md5 = md5.digest()
         content_md5 = base64.b64encode(content_md5)
         return appier.legacy.str(content_md5)
 
-    def _content_type(self, data = None):
+    def _content_type(self, data=None):
         return "text/plain"
 
     def _date(self):
         date = datetime.datetime.utcnow()
         return date.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
-    def _signature(self, method, data = None, headers = None, resource = None):
+    def _signature(self, method, data=None, headers=None, resource=None):
         content_md5 = headers["Content-MD5"]
         content_type = headers.get("Content-Type", "")
         date = headers["Date"]
@@ -117,7 +105,7 @@ class API(
         canonical_headers = ""
         canonical_resource = resource or "/"
 
-        secret = appier.legacy.bytes(self.secret, force = True)
+        secret = appier.legacy.bytes(self.secret, force=True)
 
         base = "%s\n%s\n%s\n%s\n%s%s" % (
             method,
@@ -125,9 +113,9 @@ class API(
             content_type,
             date,
             canonical_headers,
-            canonical_resource
+            canonical_resource,
         )
-        base = appier.legacy.bytes(base, force = True)
+        base = appier.legacy.bytes(base, force=True)
 
         signature = hmac.new(secret, base, hashlib.sha1).digest()
         signature = base64.b64encode(signature)

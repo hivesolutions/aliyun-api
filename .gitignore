@@ -3,6 +3,12 @@
 
 session.shelve*
 
+.DS_Store
+
+/.vscode/settings.json
+
+/.venv
+
 /dist
 /build
 /src/aliyun_api.egg-info

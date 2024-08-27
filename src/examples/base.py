@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Hive Alibaba Cloud API
-# Copyright (c) 2008-2020 Hive Solutions Lda.
+# Copyright (c) 2008-2024 Hive Solutions Lda.
 #
 # This file is part of Hive Alibaba Cloud API.
 #
@@ -22,16 +22,7 @@
 __author__ = "João Magalhães <joamag@hive.pt>"
 """ The author(s) of the module """
 
-__version__ = "1.0.0"
-""" The version of the module """
-
-__revision__ = "$LastChangedRevision$"
-""" The revision number of the module """
-
-__date__ = "$LastChangedDate$"
-""" The last change date of the module """
-
-__copyright__ = "Copyright (c) 2008-2020 Hive Solutions Lda."
+__copyright__ = "Copyright (c) 2008-2024 Hive Solutions Lda."
 """ The copyright for the module """
 
 __license__ = "Apache License, Version 2.0"
@@ -41,9 +32,10 @@ import appier
 
 import aliyun
 
+
 def get_api():
     return aliyun.API(
-        base_url = appier.conf("ALIYUN_BASE_URL", aliyun.BASE_URL),
-        access_key = appier.conf("ALIYUN_ACCESS_KEY"),
-        secret = appier.conf("ALIYUN_SECRET")
+        base_url=appier.conf("ALIYUN_BASE_URL", aliyun.BASE_URL),
+        access_key=appier.conf("ALIYUN_ACCESS_KEY"),
+        secret=appier.conf("ALIYUN_SECRET"),
     )
